@@ -1,6 +1,6 @@
 "use client";
 
-import { Register } from "@/common/functions";
+import { supabase } from "@/db/sup";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -10,13 +10,51 @@ const register = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [file, setFile] = useState();
+  const [picUrl, setPicUrl] = useState();
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleRegister = async () => {
-    const url = URL.createObjectURL(file);
-    await Register(name , email , password , url , file);
+    if (!name || !email || !password) {
+      alert("All fields required !");
+    }
+    setLoading(true);
+    if (file) {
+      const { data, error } = await supabase.storage
+        .from(`profiles/dp`)
+        .upload(file.name, file);
+      if (data) {
+        const url = `https://qccxnxhlwbnguujrghas.supabase.co/storage/v1/object/public/profiles/dp/${data.path}`;
+        setPicUrl(url);
+      } else {
+        console.log(error);
+      }
+    }
+    const res = await fetch(`/api/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+        pic: picUrl,
+      }),
+    });
+    const data = await res.json();
+    if (data) {
+      setLoading(false);
+      router.push("/");
+    } else {
+      alert("Error occured in register");
+      setLoading(false);
+    }
   };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex my-10 justify-center items-center">

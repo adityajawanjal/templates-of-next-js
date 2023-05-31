@@ -18,7 +18,7 @@ const Header = () => {
         {[
           ["Home", "/"],
           ["Sign Up", "/register"],
-          ["Contact", "/contact"],
+          ["Login", "/login"],
         ].map(([title, url]) => {
           return (
             <Link key={url} href={url} className=" mr-5">

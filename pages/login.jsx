@@ -4,13 +4,37 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const register = () => {
+const login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert("All fields required !");
+    }
+    setLoading(true);
+    const res = await fetch(`/api/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+    const data = await res.json();
+    if (data) {
+      setLoading(false);
+      router.push("/");
+    } else {
+      alert("Error occured in login");
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex my-10 justify-center items-center">
@@ -59,4 +83,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default login;
