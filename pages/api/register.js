@@ -2,6 +2,7 @@ import connectDB from "@/db/conn";
 import User from "@/models/user-model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { serialize } from "cookie";
 
 export default async function handler(req, res) {
   await connectDB();
@@ -24,8 +25,19 @@ export default async function handler(req, res) {
       });
       const result = await user.save();
       if (result) {
-        const token = jwt.sign({ token: result._id },process.env.JWT_SECRET , {expiresIn:"30d"});
-        res.status(201).json({token:token,user:{name:result.name,email:result.email , role:result.role}});
+        const token = jwt.sign({ token: result._id }, process.env.JWT_SECRET, {
+          expiresIn: "30d",
+        });
+        const cookie = serialize("datatoken", token, {
+          httpOnly: true,
+          path: "/",
+        });
+        res.setHeader("Set-Cookie", cookie);
+
+        res.status(201).json({
+          token: token,
+          user: { name: result.name, email: result.email, role: result.role },
+        });
       }
     } catch (err) {
       res.status(400).json(err);
