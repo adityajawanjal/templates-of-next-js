@@ -3,19 +3,13 @@
 import { supabase } from "@/db/sup";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import cookie from "js-cookie";
-import { useDispatch } from "react-redux";
-import { registerToken } from "@/redux/authSlice";
+import { useState } from "react";
+
 
 const register = () => {
-  useEffect(()=>{
 
-    const {token} = cookie.get(); 
-    console.log(token);
-  },[])
 
-  const dispatch = useDispatch();
+
  
 
   const [name, setName] = useState();
@@ -57,11 +51,6 @@ const register = () => {
     });
     const data = await res.json();
     if (data) {
-      cookie.set('token',data.token , {
-        httpOnly:true
-      });
-      const tok = cookie.get('token');
-      dispatch(registerToken(tok));
       setLoading(false);
       router.push("/");
     } else {

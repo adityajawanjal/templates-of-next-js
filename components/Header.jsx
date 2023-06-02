@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
-
   return (
     <div className=" h-24 border-b-2 bg-green-100 border-black px-5 flex justify-between items-center">
       <div className=" flex items-center">
