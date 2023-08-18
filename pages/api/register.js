@@ -30,12 +30,13 @@ export default async function handler(req, res) {
         });
         const cookie = serialize("token", token, {
           httpOnly: true,
+          maxAge:60*60*24,
+          path:"/",
+          sameSite:true
         });
         res.setHeader("Set-Cookie", cookie);
-
         res.status(201).json({
-          token: token,
-          user: { name: result.name, email: result.email, role: result.role },
+          message: "Registration Successfull."
         });
       }
     } catch (err) {

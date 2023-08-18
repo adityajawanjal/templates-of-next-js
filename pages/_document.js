@@ -9,12 +9,25 @@ export default function Document() {
         <Header />
         <Main />
         <NextScript />
-        <script
-            defer
-            src="https://widget.cloudinary.com/v2.0/global/all.js"
-            type="text/javascript"
-          ></script>
       </body>
     </Html>
   );
 }
+
+// export async function getServerSideProps({ req }) {
+//   if (req.headers.cookie) {
+//     const { data } = await axios.get("http://localhost:3000/api/user", {
+//       withCredentials: true,
+//       headers: {
+//         Cookie: req.headers.cookie,
+//       },
+//     });
+//     console.log(data);
+//     return { props: { data } };
+//   }
+//   return {
+//     props: {
+//       err: "Error",
+//     },
+//   };
+// }

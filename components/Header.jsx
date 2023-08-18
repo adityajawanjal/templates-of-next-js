@@ -1,7 +1,17 @@
+'use client'
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
-const Header = () => {
+const Header = async () => {
+  useEffect(()=>{
+    const fetchData = async()=>{
+      const {data} = await axios.get("/api/user");
+      console.log(data);
+    }
+    fetchData();
+  },[])
   return (
     <div className=" h-24 border-b-2 bg-green-100 border-black px-5 flex justify-between items-center">
       <div className=" flex items-center">
@@ -30,7 +40,5 @@ const Header = () => {
     </div>
   );
 };
-
-
 
 export default Header;

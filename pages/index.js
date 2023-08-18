@@ -1,6 +1,6 @@
 import Product from "@/components/Product";
 
-const index = ({ products }) => {
+const index = ({products}) => {
   return (
     <div className=" w-full flex justify-center items-center">
       <div className=" my-10 flex flex-wrap w-10/12 ">
@@ -8,7 +8,7 @@ const index = ({ products }) => {
           ? products.map((e) => {
               return <Product product={e} key={e.id} />;
             })
-          : ""}
+          : []}
       </div>
     </div>
   );
